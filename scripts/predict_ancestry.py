@@ -23,7 +23,8 @@ var_data = anc_var_trim_df.iloc[1:].to_numpy().transpose()
 n_samples = len(anc_labels)
 
 #clf = svm.SVC(kernel='linear',gamma=0.001)
-clf = RandomForestClassifier(max_depth=None)
+#clf = RandomForestClassifier(max_depth=None)
+clf = svm.NuSVC(nu = 0.2, kernel='linear',gamma=0.001)
 
 X_train, X_test, y_train, y_test = train_test_split(var_data, anc_labels, test_size=0.3, shuffle=True)
 
@@ -39,8 +40,8 @@ features_names = features_names.iloc[1:]
 features_names['INFO'] = features_names['INFO'].str.replace(r'^(.*?)EAS_AF',r'EAS_AF',regex=True)
 
 
-#imp_coef = np.abs(np.array(clf.coef_[0]))
-imp_coef = np.array(clf.feature_importances_)
+imp_coef = np.abs(np.array(clf.coef_[0]))
+#imp_coef = np.array(clf.feature_importances_)
 features_names['Importance'] = imp_coef
 top_imp_ind = np.argpartition(imp_coef, -20)[-20:]
 
